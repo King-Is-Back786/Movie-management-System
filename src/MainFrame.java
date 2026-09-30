@@ -12,12 +12,14 @@ public class MainFrame extends JFrame {
 
     // Card names: constants avoid typos when switching screens.
     public static final String LOGIN_CARD = "LOGIN";
+    public static final String REGISTER_CARD = "REGISTER";
     public static final String HOME_CARD = "HOME";
 
     private final CardLayout cardLayout = new CardLayout();
     private final JPanel cardContainer = new JPanel(cardLayout);
 
     private final LoginPanel loginPanel;
+    private final RegisterPanel registerPanel;
     private final HomePanel homePanel;
 
     public MainFrame() {
@@ -25,10 +27,12 @@ public class MainFrame extends JFrame {
 
         // Create the screens, passing this frame so they can request a switch.
         loginPanel = new LoginPanel(this);
+        registerPanel = new RegisterPanel(this);
         homePanel = new HomePanel(this);
 
         // Register each screen under a unique name.
         cardContainer.add(loginPanel, LOGIN_CARD);
+        cardContainer.add(registerPanel, REGISTER_CARD);
         cardContainer.add(homePanel, HOME_CARD);
 
         add(cardContainer);
@@ -59,6 +63,12 @@ public class MainFrame extends JFrame {
     public void showLogin() {
         loginPanel.clearFields();
         showCard(LOGIN_CARD);
+    }
+
+    /** Called by LoginPanel to switch to the registration screen. */
+    public void showRegister() {
+        registerPanel.clearFields();
+        showCard(REGISTER_CARD);
     }
 
     public static void main(String[] args) {
