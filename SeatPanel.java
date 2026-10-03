@@ -86,14 +86,12 @@ public class SeatPanel extends JPanel {
 
     private void handleSeatClick(Seat seat, JButton button) {
         if (seat.isBooked()) {
-            JOptionPane.showMessageDialog(this, "Seat " + seat.getIdentifier() + " is already booked.", "Unavailable",
-                    JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Seat " + seat.getIdentifier() + " is already booked.", "Unavailable", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         if (!seat.isSelected() && selectedCount >= MAX_SEAT_LIMIT) {
-            JOptionPane.showMessageDialog(this, "You can select a maximum of " + MAX_SEAT_LIMIT + " seats.",
-                    "Limit Reached", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "You can select a maximum of " + MAX_SEAT_LIMIT + " seats.", "Limit Reached", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -138,7 +136,7 @@ public class SeatPanel extends JPanel {
             seat.setBooked(true);
             JButton button = seatButtonMap.get(seat);
             if (button != null) {
-                button.setBackground(Color.RED);
+                button.setBackground(new Color(225, 0, 0));
                 button.setEnabled(false);
             }
         }
@@ -151,8 +149,7 @@ public class SeatPanel extends JPanel {
         JPanel screenPanel = new JPanel(new BorderLayout());
         JLabel screenLabel = new JLabel();
 
-        screenLabel.setText(
-                "----------------------------------------------------------------- SCREEN THIS WAY -----------------------------------------------------------------");
+        screenLabel.setText("----- SCREEN THIS WAY -----");
         screenLabel.setHorizontalAlignment(SwingConstants.CENTER);
         screenLabel.setBackground(Color.DARK_GRAY);
         screenLabel.setForeground(Color.WHITE);
@@ -170,7 +167,7 @@ public class SeatPanel extends JPanel {
     }
 
     private void createLegendPanel() {
-        JPanel legendPanel = new JPanel(new GridLayout(3, 1, 0, 6));
+        JPanel legendPanel = new JPanel(new GridLayout(4, 1, 0, 6));
 
         JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
         JLabel availableLabel = new JLabel("Available");
@@ -187,7 +184,7 @@ public class SeatPanel extends JPanel {
 
         greyButton.setBackground(Color.LIGHT_GRAY);
         greenButton.setBackground(Color.GREEN);
-        redButton.setBackground(Color.RED);
+        redButton.setBackground(new Color(225, 0, 0));
 
         greyButton.setFocusPainted(false);
         greenButton.setFocusPainted(false);
@@ -207,14 +204,42 @@ public class SeatPanel extends JPanel {
         tierPanel.add(new JLabel("Premium (Rows C-D): ₹200"));
         tierPanel.add(new JLabel("Recliner (Row E): ₹300"));
 
+        JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton proceedButton = new JButton("Proceed to Pay");
+
+        proceedButton.setFont(new Font("Arial", Font.BOLD, 13));
+        proceedButton.setBackground(new Color(34, 139, 34));
+        proceedButton.setForeground(Color.WHITE);
+        proceedButton.addActionListener(new ActionListener() {
+            @Override 
+            public void actionPerformed(ActionEvent e) {
+                proceedEvent();
+            }
+        });
+
+        actionPanel.add(proceedButton);
+
         selectionSummaryLabel.setHorizontalAlignment(JLabel.CENTER);
 
         legendPanel.add(selectionSummaryLabel);
         legendPanel.add(statusPanel);
         legendPanel.add(tierPanel);
+        legendPanel.add(actionPanel);
         legendPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 8, 0));
 
         this.add(legendPanel, BorderLayout.SOUTH);
+    }
+
+    public void proceedEvent() {
+        if(getSelectedSeats().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please select at least one seat before proceeding.", "No Seats Selected", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        String message = "Proceed to payment for " + selectedCount + " seat(s)?\nTotal Amount: ₹" + calculateSelectedTotal();
+        int choice = JOptionPane.showConfirmDialog(this, message, "Confirm Selection", JOptionPane.YES_NO_OPTION);
+        if (choice == JOptionPane.YES_OPTION) {
+            confirmBooking();
+        }
     }
 
     public void clearSelection() {
@@ -226,6 +251,37 @@ public class SeatPanel extends JPanel {
             }
         }
         selectedCount = 0;
+        updateSelectionSummary();
+    }
+
+    public void loadBookedSeats(List<String> bookedIdentifiers) {
+        resetAllSeats();
+        if(bookedIdentifiers == null || bookedIdentifiers.isEmpty()) {
+            return;
+        }
+
+        for (Seat seat : this.seats) {
+            if(bookedIdentifiers.contains(seat.getIdentifier())) {
+                seat.setBooked(true);
+                JButton button = this.seatButtonMap.get(seat);
+                if(button != null) {
+                    button.setBackground(new Color(225, 0, 0));
+                    button.setEnabled(false);
+                }
+            }
+        }
+    }
+
+    public void resetAllSeats() {
+        for(Seat seat : this.seats) {
+            seat.setBooked(false);
+            seat.setSelected(false);
+
+            JButton button = this.seatButtonMap.get(seat);
+            button.setBackground(Color.LIGHT_GRAY);
+            button.setEnabled(true);
+        }
+        this.selectedCount = 0;
         updateSelectionSummary();
     }
 }
