@@ -21,9 +21,15 @@ public class SeatPanel extends JPanel {
     private List<Seat> seats;
     private Map<Seat, JButton> seatButtonMap;
 
+    private JLabel selectionSummaryLabel;
+
+    private static final int MAX_SEAT_LIMIT = 6;
+    private int selectedCount = 0;
+
     public SeatPanel() {
         this.seats = new ArrayList<>();
         this.seatButtonMap = new HashMap<>();
+        this.selectionSummaryLabel = new JLabel("Selected: 0 seat(s) | Total: ₹0.0");
 
         // this.setLayout(new GridLayout(5, 6, 8, 8));
         this.setLayout(new BorderLayout(0, 15));
@@ -37,7 +43,7 @@ public class SeatPanel extends JPanel {
         JPanel gridPanel = new JPanel(new GridLayout(5, 6, 8, 8));
         gridPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        char[] rows = { 'A', 'B', 'C', 'D', 'E' };
+        char[] rows = { 'A', 'B', 'C', 'D', 'E', };
         int columns = 6;
 
         for (char row : rows) {
@@ -85,12 +91,22 @@ public class SeatPanel extends JPanel {
             return;
         }
 
+        if (!seat.isSelected() && selectedCount >= MAX_SEAT_LIMIT) {
+            JOptionPane.showMessageDialog(this, "You can select a maximum of " + MAX_SEAT_LIMIT + " seats.",
+                    "Limit Reached", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         boolean toggled = seat.toggleSelectionState();
         if (toggled) {
             if (seat.isSelected()) {
                 button.setBackground(new Color(144, 238, 144));
+                selectedCount++;
+                updateSelectionSummary();
             } else {
                 button.setBackground(Color.LIGHT_GRAY);
+                selectedCount--;
+                updateSelectionSummary();
             }
         }
     }
@@ -113,8 +129,12 @@ public class SeatPanel extends JPanel {
         return total;
     }
 
-    public void confirmBooking() {
-        for (Seat seat : getSelectedSeats()) {
+    public boolean confirmBooking() {
+        List<Seat> selected = getSelectedSeats();
+        if (selected.isEmpty()) {
+            return false;
+        }
+        for (Seat seat : selected) {
             seat.setBooked(true);
             JButton button = seatButtonMap.get(seat);
             if (button != null) {
@@ -122,13 +142,17 @@ public class SeatPanel extends JPanel {
                 button.setEnabled(false);
             }
         }
+        this.selectedCount = 0;
+        updateSelectionSummary();
+        return true;
     }
 
     private void createScreenPanel() {
         JPanel screenPanel = new JPanel(new BorderLayout());
         JLabel screenLabel = new JLabel();
 
-        screenLabel.setText("--- SCREEN THIS WAY ---");
+        screenLabel.setText(
+                "----------------------------------------------------------------- SCREEN THIS WAY -----------------------------------------------------------------");
         screenLabel.setHorizontalAlignment(SwingConstants.CENTER);
         screenLabel.setBackground(Color.DARK_GRAY);
         screenLabel.setForeground(Color.WHITE);
@@ -140,8 +164,13 @@ public class SeatPanel extends JPanel {
         this.add(screenPanel, BorderLayout.NORTH);
     }
 
+    private void updateSelectionSummary() {
+        double total = calculateSelectedTotal();
+        selectionSummaryLabel.setText("Selected: " + selectedCount + " seat(s) | Total: ₹" + (int) total);
+    }
+
     private void createLegendPanel() {
-        JPanel legendPanel = new JPanel(new GridLayout(2, 1, 0, 4));
+        JPanel legendPanel = new JPanel(new GridLayout(3, 1, 0, 6));
 
         JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
         JLabel availableLabel = new JLabel("Available");
@@ -178,10 +207,25 @@ public class SeatPanel extends JPanel {
         tierPanel.add(new JLabel("Premium (Rows C-D): ₹200"));
         tierPanel.add(new JLabel("Recliner (Row E): ₹300"));
 
+        selectionSummaryLabel.setHorizontalAlignment(JLabel.CENTER);
+
+        legendPanel.add(selectionSummaryLabel);
         legendPanel.add(statusPanel);
         legendPanel.add(tierPanel);
         legendPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 8, 0));
 
         this.add(legendPanel, BorderLayout.SOUTH);
+    }
+
+    public void clearSelection() {
+        for (Seat seat : getSelectedSeats()) {
+            seat.toggleSelectionState();
+            JButton button = seatButtonMap.get(seat);
+            if (button != null) {
+                button.setBackground(Color.LIGHT_GRAY);
+            }
+        }
+        selectedCount = 0;
+        updateSelectionSummary();
     }
 }

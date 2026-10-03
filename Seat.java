@@ -47,9 +47,13 @@ public class Seat {
 
     public void setBooked(boolean booked) {
         this.isBooked = booked;
-        if(booked) {
+        if (booked) {
             this.isSelected = false;
         }
+    }
+
+    public void setSelected(boolean selected) {
+        this.isSelected = selected;
     }
 
 }
