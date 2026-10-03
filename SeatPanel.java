@@ -1,8 +1,15 @@
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.GridLayout;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -18,13 +25,19 @@ public class SeatPanel extends JPanel {
         this.seats = new ArrayList<>();
         this.seatButtonMap = new HashMap<>();
 
-        this.setLayout(new GridLayout(5, 6, 8, 8));
+        // this.setLayout(new GridLayout(5, 6, 8, 8));
+        this.setLayout(new BorderLayout(0, 15));
 
         initializeSeats();
+        createScreenPanel();
+        createLegendPanel();
     }
 
     private void initializeSeats() {
-        char[] rows = {'A', 'B', 'C', 'D', 'E'};
+        JPanel gridPanel = new JPanel(new GridLayout(5, 6, 8, 8));
+        gridPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+
+        char[] rows = { 'A', 'B', 'C', 'D', 'E' };
         int columns = 6;
 
         for (char row : rows) {
@@ -59,14 +72,16 @@ public class SeatPanel extends JPanel {
 
                 this.seats.add(seat);
                 this.seatButtonMap.put(seat, button);
-                this.add(button);
+                gridPanel.add(button);
             }
         }
+        this.add(gridPanel, BorderLayout.CENTER);
     }
 
     private void handleSeatClick(Seat seat, JButton button) {
         if (seat.isBooked()) {
-            JOptionPane.showMessageDialog(this, "Seat " + seat.getIdentifier() + " is already booked.", "Unavailable", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Seat " + seat.getIdentifier() + " is already booked.", "Unavailable",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -107,5 +122,66 @@ public class SeatPanel extends JPanel {
                 button.setEnabled(false);
             }
         }
+    }
+
+    private void createScreenPanel() {
+        JPanel screenPanel = new JPanel(new BorderLayout());
+        JLabel screenLabel = new JLabel();
+
+        screenLabel.setText("--- SCREEN THIS WAY ---");
+        screenLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        screenLabel.setBackground(Color.DARK_GRAY);
+        screenLabel.setForeground(Color.WHITE);
+        screenLabel.setOpaque(true);
+        screenLabel.setBorder(BorderFactory.createEmptyBorder(7, 0, 7, 0));
+
+        screenPanel.add(screenLabel, BorderLayout.CENTER);
+
+        this.add(screenPanel, BorderLayout.NORTH);
+    }
+
+    private void createLegendPanel() {
+        JPanel legendPanel = new JPanel(new GridLayout(2, 1, 0, 4));
+
+        JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        JLabel availableLabel = new JLabel("Available");
+        JLabel selectedLabel = new JLabel("Selected");
+        JLabel bookedLabel = new JLabel("Booked");
+
+        JButton greyButton = new JButton();
+        JButton greenButton = new JButton();
+        JButton redButton = new JButton();
+
+        greyButton.setPreferredSize(new Dimension(16, 16));
+        greenButton.setPreferredSize(new Dimension(16, 16));
+        redButton.setPreferredSize(new Dimension(16, 16));
+
+        greyButton.setBackground(Color.LIGHT_GRAY);
+        greenButton.setBackground(Color.GREEN);
+        redButton.setBackground(Color.RED);
+
+        greyButton.setFocusPainted(false);
+        greenButton.setFocusPainted(false);
+        redButton.setFocusPainted(false);
+
+        statusPanel.add(greyButton);
+        statusPanel.add(availableLabel);
+
+        statusPanel.add(greenButton);
+        statusPanel.add(selectedLabel);
+
+        statusPanel.add(redButton);
+        statusPanel.add(bookedLabel);
+
+        JPanel tierPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
+        tierPanel.add(new JLabel("Normal (Rows A-B): ₹150"));
+        tierPanel.add(new JLabel("Premium (Rows C-D): ₹200"));
+        tierPanel.add(new JLabel("Recliner (Row E): ₹300"));
+
+        legendPanel.add(statusPanel);
+        legendPanel.add(tierPanel);
+        legendPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 8, 0));
+
+        this.add(legendPanel, BorderLayout.SOUTH);
     }
 }
