@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SeatPanel extends JPanel {
+public class SeatPanel extends JPanel{
     private List<Seat> seats;
     private Map<Seat, JButton> seatButtonMap;
 
@@ -30,6 +30,8 @@ public class SeatPanel extends JPanel {
 
     private Show currentShow;
     private JLabel screenLabel;
+
+    private SeatSelectionListener selectionListener;
 
     public SeatPanel() {
         this.seats = new ArrayList<>();
@@ -239,10 +241,15 @@ public class SeatPanel extends JPanel {
             JOptionPane.showMessageDialog(this, "Please select at least one seat before proceeding.", "No Seats Selected", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        String message = "Proceed to payment for " + selectedCount + " seat(s)?\nTotal Amount: ₹" + calculateSelectedTotal();
-        int choice = JOptionPane.showConfirmDialog(this, message, "Confirm Selection", JOptionPane.YES_NO_OPTION);
-        if (choice == JOptionPane.YES_OPTION) {
-            confirmBooking();
+
+        if(this.selectionListener != null) {
+            this.selectionListener.onProceedToCheckout(this.currentShow, getSelectedSeats(), calculateSelectedTotal());
+        } else {
+            String message = "Proceed to payment for " + selectedCount + " seat(s)?\nTotal Amount: ₹" + calculateSelectedTotal();
+            int choice = JOptionPane.showConfirmDialog(this, message, "Confirm Selection", JOptionPane.YES_NO_OPTION);
+            if (choice == JOptionPane.YES_OPTION) {
+                confirmBooking();
+            }
         }
     }
 
@@ -308,4 +315,10 @@ public class SeatPanel extends JPanel {
     public Show getCurrentShow() {
         return this.currentShow;
     }
+
+    public void setSeatSelectionListener(SeatSelectionListener listener) {
+        this.selectionListener = listener;
+    }
+
+    
 }
