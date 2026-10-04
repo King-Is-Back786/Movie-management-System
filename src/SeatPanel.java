@@ -1,3 +1,5 @@
+import movie.model.Show;
+
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.BorderFactory;
@@ -25,6 +27,9 @@ public class SeatPanel extends JPanel {
 
     private static final int MAX_SEAT_LIMIT = 6;
     private int selectedCount = 0;
+
+    private Show currentShow;
+    private JLabel screenLabel;
 
     public SeatPanel() {
         this.seats = new ArrayList<>();
@@ -147,9 +152,8 @@ public class SeatPanel extends JPanel {
 
     private void createScreenPanel() {
         JPanel screenPanel = new JPanel(new BorderLayout());
-        JLabel screenLabel = new JLabel();
+        this.screenLabel = new JLabel("----- SCREEN THIS WAY -----");
 
-        screenLabel.setText("----- SCREEN THIS WAY -----");
         screenLabel.setHorizontalAlignment(SwingConstants.CENTER);
         screenLabel.setBackground(Color.DARK_GRAY);
         screenLabel.setForeground(Color.WHITE);
@@ -283,5 +287,25 @@ public class SeatPanel extends JPanel {
         }
         this.selectedCount = 0;
         updateSelectionSummary();
+    }
+
+    public void displaySeatsForShow(Show show, List<String> bookedSeats) {
+        this.currentShow = show;
+
+        resetAllSeats();
+
+        if(show != null) {
+            screenLabel.setText("Show #" + show.getShowId() + " (" + show.getShowTime() + ") | ----- SCREEN THIS WAY -----");
+        } else {
+            screenLabel.setText("--- SCREEN THIS WAY ---");
+        }
+
+        if(bookedSeats != null && !bookedSeats.isEmpty()) {
+            loadBookedSeats(bookedSeats);
+        }
+    }
+
+    public Show getCurrentShow() {
+        return this.currentShow;
     }
 }
