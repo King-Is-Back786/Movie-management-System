@@ -126,6 +126,24 @@ public class SeatPanel extends JPanel{
         return selected;
     }
 
+    // For member 2
+    public List<String> getSelectedSeatsIdentifier() {
+        List<String> identifiers = new ArrayList<>();
+        for(Seat seat : getSelectedSeats()) {
+            identifiers.add(seat.getIdentifier());
+        }
+        return identifiers;
+    }
+
+    // For member 5
+    public String getSelectedSeatsAsString() {
+        List<String> identifiers = getSelectedSeatsIdentifier();
+        if(identifiers.isEmpty()) {
+            return "";
+        }
+        return String.join(", ", identifiers);
+    }
+
     public double calculateSelectedTotal() {
         double total = 0.0;
         for (Seat seat : getSelectedSeats()) {
