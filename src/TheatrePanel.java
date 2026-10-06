@@ -42,16 +42,17 @@ public class TheatrePanel extends JPanel {
 
         // Action Listeners
         selectTheatreButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selectedTheatre = theatreList.getSelectedValue();
-                if (selectedTheatre == null) {
-                    JOptionPane.showMessageDialog(null, "Please select a theatre first!");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Selected: " + selectedTheatre);
-                }
-            }
-        });
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String selectedTheatre = theatreList.getSelectedValue();
+        if (selectedTheatre == null) {
+            JOptionPane.showMessageDialog(null, "Please select a theatre first!");
+        } else {
+            // This navigates to the Seat Selection screen we just built!
+            parentFrame.showSeats();
+        }
+    }
+});
 
         backButton.addActionListener(new ActionListener() {
             @Override

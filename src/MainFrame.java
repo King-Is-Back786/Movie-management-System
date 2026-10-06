@@ -9,7 +9,8 @@ public class MainFrame extends JFrame {
     RegisterPanel registerPanel;
     HomePanel homePanel;
     MoviePanel moviePanel;
-    TheatrePanel theatrePanel; // 1. Declare TheatrePanel
+    TheatrePanel theatrePanel;
+    SeatPanel seatPanel;
 
     public MainFrame() {
         setTitle("Movie Management System");
@@ -25,14 +26,16 @@ public class MainFrame extends JFrame {
         registerPanel = new RegisterPanel(this);
         homePanel = new HomePanel(this);
         moviePanel = new MoviePanel(this);
-        theatrePanel = new TheatrePanel(this); // 2. Initialize TheatrePanel
+        theatrePanel = new TheatrePanel(this);
+        seatPanel = new SeatPanel(this);
 
         // Add them to the container with card names
         mainContainer.add(loginPanel, "LOGIN");
         mainContainer.add(registerPanel, "REGISTER");
         mainContainer.add(homePanel, "HOME");
         mainContainer.add(moviePanel, "MOVIE");
-        mainContainer.add(theatrePanel, "THEATRE"); // 3. Add to CardLayout container
+        mainContainer.add(theatrePanel, "THEATRE");
+        mainContainer.add(seatPanel, "SEAT");
 
         add(mainContainer);
         cardLayout.show(mainContainer, "LOGIN");
@@ -51,9 +54,12 @@ public class MainFrame extends JFrame {
         cardLayout.show(mainContainer, "MOVIE");
     }
 
-    // 4. Add this method that MoviePanel is looking for!
     public void showTheatres() {
         cardLayout.show(mainContainer, "THEATRE");
+    }
+
+    public void showSeats() {
+        cardLayout.show(mainContainer, "SEAT");
     }
 
     public static void main(String[] args) {
