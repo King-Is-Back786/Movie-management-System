@@ -41,18 +41,18 @@ public class MoviePanel extends JPanel {
         add(btnPanel, BorderLayout.SOUTH);
 
         // Action Listeners (traditional style, easy to explain)
-        selectMovieButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selectedMovie = movieList.getSelectedValue();
-                if (selectedMovie == null) {
-                    JOptionPane.showMessageDialog(null, "Please select a movie first!");
-                } else {
-                    JOptionPane.showMessageDialog(null, "You selected: " + selectedMovie);
-                    // Later, Member 4 can hook this up to the seat selection screen!
-                }
-            }
-        });
+       selectMovieButton.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String selectedMovie = movieList.getSelectedValue();
+        if (selectedMovie == null) {
+            JOptionPane.showMessageDialog(null, "Please select a movie first!");
+        } else {
+            // Switch to Theatre selection screen (Day 5 task)
+            parentFrame.showTheatres();
+        }
+    }
+});
 
         backButton.addActionListener(new ActionListener() {
             @Override

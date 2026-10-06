@@ -8,7 +8,8 @@ public class MainFrame extends JFrame {
     LoginPanel loginPanel;
     RegisterPanel registerPanel;
     HomePanel homePanel;
-    MoviePanel moviePanel; // Added MoviePanel
+    MoviePanel moviePanel;
+    TheatrePanel theatrePanel; // 1. Declare TheatrePanel
 
     public MainFrame() {
         setTitle("Movie Management System");
@@ -23,32 +24,36 @@ public class MainFrame extends JFrame {
         loginPanel = new LoginPanel(this);
         registerPanel = new RegisterPanel(this);
         homePanel = new HomePanel(this);
-        moviePanel = new MoviePanel(this); // Initialize MoviePanel
+        moviePanel = new MoviePanel(this);
+        theatrePanel = new TheatrePanel(this); // 2. Initialize TheatrePanel
 
         // Add them to the container with card names
         mainContainer.add(loginPanel, "LOGIN");
         mainContainer.add(registerPanel, "REGISTER");
         mainContainer.add(homePanel, "HOME");
-        mainContainer.add(moviePanel, "MOVIE"); // Register Movie card
+        mainContainer.add(moviePanel, "MOVIE");
+        mainContainer.add(theatrePanel, "THEATRE"); // 3. Add to CardLayout container
 
         add(mainContainer);
         cardLayout.show(mainContainer, "LOGIN");
     }
 
-    // Generic method to switch cards
     public void switchToCard(String cardName) {
         cardLayout.show(mainContainer, cardName);
     }
 
-    // Specific method called by LoginPanel after a successful login to pass the username
     public void showHome(String username) {
         homePanel.setWelcomeUser(username);
         cardLayout.show(mainContainer, "HOME");
     }
 
-    // Specific method to switch to the Movie display GUI
     public void showMovies() {
         cardLayout.show(mainContainer, "MOVIE");
+    }
+
+    // 4. Add this method that MoviePanel is looking for!
+    public void showTheatres() {
+        cardLayout.show(mainContainer, "THEATRE");
     }
 
     public static void main(String[] args) {
