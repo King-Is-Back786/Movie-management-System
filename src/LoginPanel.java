@@ -1,111 +1,63 @@
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-/**
- * LoginPanel: the first screen the user sees.
- * On a successful login it asks MainFrame to switch to the home dashboard.
- * Also provides a button to navigate to the registration screen.
- */
 public class LoginPanel extends JPanel {
+    JTextField userField;
+    JPasswordField passField;
+    JButton loginButton, registerButton;
+    MainFrame parentFrame;
 
-    private final MainFrame mainFrame;
-    private final JTextField usernameField = new JTextField(15);
-    private final JPasswordField passwordField = new JPasswordField(15);
-    private final JButton loginButton = new JButton("Login");
-    private final JButton registerButton = new JButton("Register");
-
-    public LoginPanel(MainFrame mainFrame) {
-        this.mainFrame = mainFrame;
-        initComponents();
-    }
-
-    private void initComponents() {
-        setLayout(new GridBagLayout()); // centers the form in the window
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(8, 8, 8, 8);
+    public LoginPanel(MainFrame frame) {
+        parentFrame = frame;
+        setLayout(new GridLayout(4, 1, 10, 10));
 
         // Title
-        JLabel title = new JLabel("Movie Management System");
-        title.setFont(new Font("SansSerif", Font.BOLD, 24));
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        add(title, gbc);
+        JLabel titleLabel = new JLabel("Login Screen", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        add(titleLabel);
 
-        // Username row
-        gbc.gridwidth = 1;
-        gbc.gridy = 1;
-        gbc.gridx = 0;
-        gbc.anchor = GridBagConstraints.EAST;
-        add(new JLabel("Username:"), gbc);
-        gbc.gridx = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        add(usernameField, gbc);
+        // Username Panel
+        JPanel userPanel = new JPanel();
+        userPanel.add(new JLabel("Username: "));
+        userField = new JTextField(15);
+        userPanel.add(userField);
+        add(userPanel);
 
-        // Password row
-        gbc.gridy = 2;
-        gbc.gridx = 0;
-        gbc.anchor = GridBagConstraints.EAST;
-        add(new JLabel("Password:"), gbc);
-        gbc.gridx = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        add(passwordField, gbc);
+        // Password Panel
+        JPanel passPanel = new JPanel();
+        passPanel.add(new JLabel("Password: "));
+        passField = new JPasswordField(15);
+        passPanel.add(passField);
+        add(passPanel);
 
-        // Buttons row (Login and Register)
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
-        buttonPanel.add(loginButton);
-        buttonPanel.add(registerButton);
+        // Buttons Panel
+        JPanel btnPanel = new JPanel();
+        loginButton = new JButton("Login");
+        registerButton = new JButton("Register");
+        btnPanel.add(loginButton);
+        btnPanel.add(registerButton);
+        add(btnPanel);
 
-        gbc.gridy = 3;
-        gbc.gridx = 0;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        add(buttonPanel, gbc);
+        // Traditional ActionListener (very easy to explain to mam)
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = userField.getText();
+                if (username.equals("")) {
+                    JOptionPane.showMessageDialog(null, "Please enter username!");
+                } else {
+                    parentFrame.switchToCard("HOME");
+                }
+            }
+        });
 
-        // Clicking the button or pressing Enter in the password field logs in.
-        loginButton.addActionListener(e -> attemptLogin());
-        passwordField.addActionListener(e -> attemptLogin());
-        
-        // Clicking Register switches to the registration screen
-        registerButton.addActionListener(e -> mainFrame.showRegister());
-    }
-
-    /**
-     * Validates the credentials, then asks MainFrame to switch screens.
-     * TODO: replace the placeholder check with real authentication
-     * (e.g., a UserManager class) when the backend is ready.
-     */
-    private void attemptLogin() {
-        String username = usernameField.getText().trim();
-        String password = new String(passwordField.getPassword());
-
-        if (username.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                    "Please enter both username and password.",
-                    "Login Error", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        // Placeholder rule: any non-empty credentials are accepted.
-        mainFrame.showHome(username);
-    }
-
-    /** Resets the form (used after logout). */
-    public void clearFields() {
-        usernameField.setText("");
-        passwordField.setText("");
-        usernameField.requestFocusInWindow();
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                parentFrame.switchToCard("REGISTER");
+            }
+        });
     }
 }

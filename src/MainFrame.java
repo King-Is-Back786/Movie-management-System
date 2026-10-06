@@ -1,78 +1,44 @@
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import java.awt.CardLayout;
+import javax.swing.*;
+import java.awt.*;
 
-/**
- * MainFrame is the single application window.
- * It owns a CardLayout that stacks all screens (panels) on top of each other;
- * only one is visible at a time. Other panels ask MainFrame to switch screens.
- */
 public class MainFrame extends JFrame {
+    CardLayout cardLayout;
+    JPanel mainContainer;
 
-    // Card names: constants avoid typos when switching screens.
-    public static final String LOGIN_CARD = "LOGIN";
-    public static final String REGISTER_CARD = "REGISTER";
-    public static final String HOME_CARD = "HOME";
-
-    private final CardLayout cardLayout = new CardLayout();
-    private final JPanel cardContainer = new JPanel(cardLayout);
-
-    private final LoginPanel loginPanel;
-    private final RegisterPanel registerPanel;
-    private final HomePanel homePanel;
+    LoginPanel loginPanel;
+    RegisterPanel registerPanel;
+    HomePanel homePanel;
 
     public MainFrame() {
-        super("Movie Management System");
+        setTitle("Movie Management System");
+        setSize(500, 350);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
 
-        // Create the screens, passing this frame so they can request a switch.
+        cardLayout = new CardLayout();
+        mainContainer = new JPanel(cardLayout);
+
+        // Initialize panels and pass the MainFrame reference
         loginPanel = new LoginPanel(this);
         registerPanel = new RegisterPanel(this);
         homePanel = new HomePanel(this);
 
-        // Register each screen under a unique name.
-        cardContainer.add(loginPanel, LOGIN_CARD);
-        cardContainer.add(registerPanel, REGISTER_CARD);
-        cardContainer.add(homePanel, HOME_CARD);
+        // Add them to the container with card names
+        mainContainer.add(loginPanel, "LOGIN");
+        mainContainer.add(registerPanel, "REGISTER");
+        mainContainer.add(homePanel, "HOME");
 
-        add(cardContainer);
-
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(900, 600);
-        setLocationRelativeTo(null); // center on screen
-
-        // Start on the login screen.
-        showCard(LOGIN_CARD);
+        add(mainContainer);
+        cardLayout.show(mainContainer, "LOGIN");
     }
 
-    /**
-     * Screen-switching logic: CardLayout.show() hides the currently visible
-     * panel and reveals the one registered under the given name.
-     */
-    public void showCard(String cardName) {
-        cardLayout.show(cardContainer, cardName);
-    }
-
-    /** Called by LoginPanel after a successful login. */
-    public void showHome(String username) {
-        homePanel.setWelcomeUser(username);
-        showCard(HOME_CARD);
-    }
-
-    /** Called by HomePanel when the user logs out. */
-    public void showLogin() {
-        loginPanel.clearFields();
-        showCard(LOGIN_CARD);
-    }
-
-    /** Called by LoginPanel to switch to the registration screen. */
-    public void showRegister() {
-        registerPanel.clearFields();
-        showCard(REGISTER_CARD);
+    // Simple method to switch screens
+    public void switchToCard(String cardName) {
+        cardLayout.show(mainContainer, cardName);
     }
 
     public static void main(String[] args) {
-        // Swing components must be created on the Event Dispatch Thread.
-        SwingUtilities.invokeLater(() -> new MainFrame().setVisible(true));
+        // Standard main method to launch UI
+        new MainFrame().setVisible(true);
     }
 }
