@@ -8,6 +8,7 @@ public class MainFrame extends JFrame {
     LoginPanel loginPanel;
     RegisterPanel registerPanel;
     HomePanel homePanel;
+    MoviePanel moviePanel; // Added MoviePanel
 
     public MainFrame() {
         setTitle("Movie Management System");
@@ -22,11 +23,13 @@ public class MainFrame extends JFrame {
         loginPanel = new LoginPanel(this);
         registerPanel = new RegisterPanel(this);
         homePanel = new HomePanel(this);
+        moviePanel = new MoviePanel(this); // Initialize MoviePanel
 
         // Add them to the container with card names
         mainContainer.add(loginPanel, "LOGIN");
         mainContainer.add(registerPanel, "REGISTER");
         mainContainer.add(homePanel, "HOME");
+        mainContainer.add(moviePanel, "MOVIE"); // Register Movie card
 
         add(mainContainer);
         cardLayout.show(mainContainer, "LOGIN");
@@ -41,6 +44,11 @@ public class MainFrame extends JFrame {
     public void showHome(String username) {
         homePanel.setWelcomeUser(username);
         cardLayout.show(mainContainer, "HOME");
+    }
+
+    // Specific method to switch to the Movie display GUI
+    public void showMovies() {
+        cardLayout.show(mainContainer, "MOVIE");
     }
 
     public static void main(String[] args) {

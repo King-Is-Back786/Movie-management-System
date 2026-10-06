@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 public class HomePanel extends JPanel {
     JLabel userGreetingLabel;
-    JButton logoutButton;
+    JButton logoutButton, viewMoviesButton;
     MainFrame parentFrame;
 
     public HomePanel(MainFrame frame) {
@@ -18,8 +18,8 @@ public class HomePanel extends JPanel {
         titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
         add(titleLabel, BorderLayout.NORTH);
 
-        // 2. Center panel for personalized greeting and info
-        JPanel centerPanel = new JPanel(new GridLayout(2, 1, 5, 5));
+        // 2. Center panel for personalized greeting, info, and navigation button
+        JPanel centerPanel = new JPanel(new GridLayout(3, 1, 5, 5));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
         userGreetingLabel = new JLabel("Welcome!", SwingConstants.CENTER);
@@ -29,6 +29,12 @@ public class HomePanel extends JPanel {
         JLabel infoLabel = new JLabel("Member 1 Module: User Identity & Payment Gateway", SwingConstants.CENTER);
         infoLabel.setFont(new Font("Arial", Font.ITALIC, 14));
         centerPanel.add(infoLabel);
+
+        // Sub-panel for the View Movies button so it centers nicely
+        JPanel btnSubPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        viewMoviesButton = new JButton("View Movies");
+        btnSubPanel.add(viewMoviesButton);
+        centerPanel.add(btnSubPanel);
         
         add(centerPanel, BorderLayout.CENTER);
 
@@ -38,6 +44,14 @@ public class HomePanel extends JPanel {
         logoutButton = new JButton("Logout");
         bottomPanel.add(logoutButton);
         add(bottomPanel, BorderLayout.SOUTH);
+
+        // View Movies action triggers navigation to MoviePanel
+        viewMoviesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                parentFrame.showMovies();
+            }
+        });
 
         // Logout action returns to login screen
         logoutButton.addActionListener(new ActionListener() {
