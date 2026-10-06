@@ -57,25 +57,28 @@ public class SeatPanel extends JPanel {
 
         // Confirm Action
         confirmButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                StringBuilder chosen = new StringBuilder();
-                int count = 0;
-                for (int i = 0; i < 20; i++) {
-                    if (seatButtons[i].getBackground().equals(Color.GREEN)) {
-                        chosen.append("Seat ").append(i + 1).append(" ");
-                        count++;
-                    }
-                }
-
-                if (count == 0) {
-                    JOptionPane.showMessageDialog(null, "Please select at least one seat!");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Successfully Selected:\n" + chosen.toString() + "\nTotal Seats: " + count);
-                    // Next, Member 5's booking amount calculation can hook in here!
-                }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        StringBuilder chosen = new StringBuilder();
+        int count = 0;
+        for (int i = 0; i < 20; i++) {
+            if (seatButtons[i].getBackground().equals(Color.GREEN)) {
+                chosen.append("S").append(i + 1).append(" ");
+                count++;
             }
-        });
+        }
+
+        if (count == 0) {
+            JOptionPane.showMessageDialog(null, "Please select at least one seat!");
+        } else {
+            int ticketPrice = 12; // $12 per seat
+            int totalAmount = count * ticketPrice;
+            
+            // Navigate to Day 7 Booking Confirmation Screen
+            parentFrame.showBooking("Current USer", chosen.toString().trim(), totalAmount);
+        }
+    }
+});
 
         // Back Action
         backButton.addActionListener(new ActionListener() {

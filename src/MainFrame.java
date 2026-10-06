@@ -11,6 +11,7 @@ public class MainFrame extends JFrame {
     MoviePanel moviePanel;
     TheatrePanel theatrePanel;
     SeatPanel seatPanel;
+    BookingPanel bookingPanel; // 1. Declare BookingPanel
 
     public MainFrame() {
         setTitle("Movie Management System");
@@ -28,6 +29,7 @@ public class MainFrame extends JFrame {
         moviePanel = new MoviePanel(this);
         theatrePanel = new TheatrePanel(this);
         seatPanel = new SeatPanel(this);
+        bookingPanel = new BookingPanel(this); // 2. Initialize BookingPanel
 
         // Add them to the container with card names
         mainContainer.add(loginPanel, "LOGIN");
@@ -36,6 +38,7 @@ public class MainFrame extends JFrame {
         mainContainer.add(moviePanel, "MOVIE");
         mainContainer.add(theatrePanel, "THEATRE");
         mainContainer.add(seatPanel, "SEAT");
+        mainContainer.add(bookingPanel, "BOOKING"); // 3. Add to CardLayout container
 
         add(mainContainer);
         cardLayout.show(mainContainer, "LOGIN");
@@ -60,6 +63,12 @@ public class MainFrame extends JFrame {
 
     public void showSeats() {
         cardLayout.show(mainContainer, "SEAT");
+    }
+
+    // 4. Add this method to pass the final receipt details and show the booking screen
+    public void showBooking(String username, String seats, int total) {
+        bookingPanel.updateBookingDetails(username, seats, total);
+        cardLayout.show(mainContainer, "BOOKING");
     }
 
     public static void main(String[] args) {
