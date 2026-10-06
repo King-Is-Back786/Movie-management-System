@@ -32,13 +32,18 @@ public class MainFrame extends JFrame {
         cardLayout.show(mainContainer, "LOGIN");
     }
 
-    // Simple method to switch screens
+    // Generic method to switch cards
     public void switchToCard(String cardName) {
         cardLayout.show(mainContainer, cardName);
     }
 
+    // Specific method called by LoginPanel after a successful login to pass the username
+    public void showHome(String username) {
+        homePanel.setWelcomeUser(username);
+        cardLayout.show(mainContainer, "HOME");
+    }
+
     public static void main(String[] args) {
-        // Standard main method to launch UI
         new MainFrame().setVisible(true);
     }
 }

@@ -40,11 +40,27 @@ public class RegisterPanel extends JPanel {
         btnPanel.add(backButton);
         add(btnPanel);
 
+        // Register action connected to UserDAO for User INSERT
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Registration successful!");
-                parentFrame.switchToCard("LOGIN");
+                String username = userField.getText().trim();
+                String password = new String(passField.getPassword());
+
+                if (username.isEmpty() || password.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Please fill in all fields!");
+                    return;
+                }
+
+                UserDAO userDAO = new UserDAO();
+                boolean success = userDAO.registerUser(username, password);
+
+                if (success) {
+                    JOptionPane.showMessageDialog(null, "Registration successful! Please login.");
+                    parentFrame.switchToCard("LOGIN");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Registration failed (Username may already exist).", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 

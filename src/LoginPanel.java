@@ -40,15 +40,27 @@ public class LoginPanel extends JPanel {
         btnPanel.add(registerButton);
         add(btnPanel);
 
-        // Traditional ActionListener (very easy to explain to mam)
+        // Traditional ActionListener connected to UserDAO for database verification
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String username = userField.getText();
-                if (username.equals("")) {
-                    JOptionPane.showMessageDialog(null, "Please enter username!");
+                String username = userField.getText().trim();
+                String password = new String(passField.getPassword());
+
+                if (username.isEmpty() || password.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Please enter both username and password!");
+                    return;
+                }
+
+                // Check credentials against the database using UserDAO
+                UserDAO userDAO = new UserDAO();
+                boolean isValid = userDAO.verifyLogin(username, password);
+
+                if (isValid) {
+                    JOptionPane.showMessageDialog(null, "Login Successful!");
+                    parentFrame.showHome(username);
                 } else {
-                    parentFrame.switchToCard("HOME");
+                    JOptionPane.showMessageDialog(null, "Invalid username or password!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -59,5 +71,12 @@ public class LoginPanel extends JPanel {
                 parentFrame.switchToCard("REGISTER");
             }
         });
+    }
+
+    // Helper method to clear text fields when logging out
+    public void clearFields() {
+        userField.setText("");
+        passField.setText("");
+        userField.requestFocusInWindow();
     }
 }
