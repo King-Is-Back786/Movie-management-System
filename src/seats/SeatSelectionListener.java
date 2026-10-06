@@ -1,3 +1,5 @@
+package seats;
+
 import java.util.List;
 
 import movie.model.Show;

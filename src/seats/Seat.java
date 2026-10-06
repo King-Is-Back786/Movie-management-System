@@ -1,3 +1,5 @@
+package seats;
+
 public class Seat {
     private String identifier;
     private String tier;
