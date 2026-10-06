@@ -11,7 +11,8 @@ public class MainFrame extends JFrame {
     MoviePanel moviePanel;
     TheatrePanel theatrePanel;
     SeatPanel seatPanel;
-    BookingPanel bookingPanel; // 1. Declare BookingPanel
+    BookingPanel bookingPanel;
+    MyBookingsPanel myBookingsPanel; // 1. Declare MyBookingsPanel
 
     public MainFrame() {
         setTitle("Movie Management System");
@@ -29,7 +30,8 @@ public class MainFrame extends JFrame {
         moviePanel = new MoviePanel(this);
         theatrePanel = new TheatrePanel(this);
         seatPanel = new SeatPanel(this);
-        bookingPanel = new BookingPanel(this); // 2. Initialize BookingPanel
+        bookingPanel = new BookingPanel(this);
+        myBookingsPanel = new MyBookingsPanel(this); // 2. Initialize MyBookingsPanel
 
         // Add them to the container with card names
         mainContainer.add(loginPanel, "LOGIN");
@@ -38,7 +40,8 @@ public class MainFrame extends JFrame {
         mainContainer.add(moviePanel, "MOVIE");
         mainContainer.add(theatrePanel, "THEATRE");
         mainContainer.add(seatPanel, "SEAT");
-        mainContainer.add(bookingPanel, "BOOKING"); // 3. Add to CardLayout container
+        mainContainer.add(bookingPanel, "BOOKING");
+        mainContainer.add(myBookingsPanel, "HISTORY"); // 3. Add to CardLayout container
 
         add(mainContainer);
         cardLayout.show(mainContainer, "LOGIN");
@@ -65,10 +68,15 @@ public class MainFrame extends JFrame {
         cardLayout.show(mainContainer, "SEAT");
     }
 
-    // 4. Add this method to pass the final receipt details and show the booking screen
     public void showBooking(String username, String seats, int total) {
         bookingPanel.updateBookingDetails(username, seats, total);
         cardLayout.show(mainContainer, "BOOKING");
+    }
+
+    // 4. Add this method to switch to the Booking History screen
+    public void showMyBookings(String username) {
+        myBookingsPanel.loadUserBookings(username);
+        cardLayout.show(mainContainer, "HISTORY");
     }
 
     public static void main(String[] args) {
