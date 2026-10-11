@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SeatPanel extends JPanel{
+public class SeatPanel extends JPanel {
     private List<Seat> seats;
     private Map<Seat, JButton> seatButtonMap;
 
@@ -95,12 +95,14 @@ public class SeatPanel extends JPanel{
 
     private void handleSeatClick(Seat seat, JButton button) {
         if (seat.isBooked()) {
-            JOptionPane.showMessageDialog(this, "Seat " + seat.getIdentifier() + " is already booked.", "Unavailable", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Seat " + seat.getIdentifier() + " is already booked.", "Unavailable",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         if (!seat.isSelected() && selectedCount >= MAX_SEAT_LIMIT) {
-            JOptionPane.showMessageDialog(this, "You can select a maximum of " + MAX_SEAT_LIMIT + " seats.", "Limit Reached", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "You can select a maximum of " + MAX_SEAT_LIMIT + " seats.",
+                    "Limit Reached", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -131,7 +133,7 @@ public class SeatPanel extends JPanel{
     // For member 2
     public List<String> getSelectedSeatsIdentifier() {
         List<String> identifiers = new ArrayList<>();
-        for(Seat seat : getSelectedSeats()) {
+        for (Seat seat : getSelectedSeats()) {
             identifiers.add(seat.getIdentifier());
         }
         return identifiers;
@@ -140,7 +142,7 @@ public class SeatPanel extends JPanel{
     // For member 5
     public String getSelectedSeatsAsString() {
         List<String> identifiers = getSelectedSeatsIdentifier();
-        if(identifiers.isEmpty()) {
+        if (identifiers.isEmpty()) {
             return "";
         }
         return String.join(", ", identifiers);
@@ -237,7 +239,7 @@ public class SeatPanel extends JPanel{
         proceedButton.setBackground(new Color(34, 139, 34));
         proceedButton.setForeground(Color.WHITE);
         proceedButton.addActionListener(new ActionListener() {
-            @Override 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 proceedEvent();
             }
@@ -257,15 +259,17 @@ public class SeatPanel extends JPanel{
     }
 
     public void proceedEvent() {
-        if(getSelectedSeats().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please select at least one seat before proceeding.", "No Seats Selected", JOptionPane.WARNING_MESSAGE);
+        if (getSelectedSeats().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please select at least one seat before proceeding.",
+                    "No Seats Selected", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        if(this.selectionListener != null) {
+        if (this.selectionListener != null) {
             this.selectionListener.onProceedToCheckout(this.currentShow, getSelectedSeats(), calculateSelectedTotal());
         } else {
-            String message = "Proceed to payment for " + selectedCount + " seat(s)?\nTotal Amount: ₹" + calculateSelectedTotal();
+            String message = "Proceed to payment for " + selectedCount + " seat(s)?\nTotal Amount: ₹"
+                    + calculateSelectedTotal();
             int choice = JOptionPane.showConfirmDialog(this, message, "Confirm Selection", JOptionPane.YES_NO_OPTION);
             if (choice == JOptionPane.YES_OPTION) {
                 confirmBooking();
@@ -287,15 +291,15 @@ public class SeatPanel extends JPanel{
 
     public void loadBookedSeats(List<String> bookedIdentifiers) {
         resetAllSeats();
-        if(bookedIdentifiers == null || bookedIdentifiers.isEmpty()) {
+        if (bookedIdentifiers == null || bookedIdentifiers.isEmpty()) {
             return;
         }
 
         for (Seat seat : this.seats) {
-            if(bookedIdentifiers.contains(seat.getIdentifier())) {
+            if (bookedIdentifiers.contains(seat.getIdentifier())) {
                 seat.setBooked(true);
                 JButton button = this.seatButtonMap.get(seat);
-                if(button != null) {
+                if (button != null) {
                     button.setBackground(new Color(225, 0, 0));
                     button.setEnabled(false);
                 }
@@ -304,7 +308,7 @@ public class SeatPanel extends JPanel{
     }
 
     public void resetAllSeats() {
-        for(Seat seat : this.seats) {
+        for (Seat seat : this.seats) {
             seat.setBooked(false);
             seat.setSelected(false);
 
@@ -321,13 +325,14 @@ public class SeatPanel extends JPanel{
 
         resetAllSeats();
 
-        if(show != null) {
-            screenLabel.setText("Show #" + show.getShowId() + " (" + show.getShowTime() + ") | ----- SCREEN THIS WAY -----");
+        if (show != null) {
+            screenLabel.setText(
+                    "Show #" + show.getShowId() + " (" + show.getShowTime() + ") | ----- SCREEN THIS WAY -----");
         } else {
             screenLabel.setText("--- SCREEN THIS WAY ---");
         }
 
-        if(bookedSeats != null && !bookedSeats.isEmpty()) {
+        if (bookedSeats != null && !bookedSeats.isEmpty()) {
             loadBookedSeats(bookedSeats);
         }
     }
@@ -341,11 +346,11 @@ public class SeatPanel extends JPanel{
     }
 
     public Seat getSeat(String identifier) {
-        if(identifier == null) {
+        if (identifier == null) {
             return null;
         }
-        for(Seat seat : seats) {
-            if(seat.getIdentifier().equalsIgnoreCase(identifier.trim())) {
+        for (Seat seat : seats) {
+            if (seat.getIdentifier().equalsIgnoreCase(identifier.trim())) {
                 return seat;
             }
         }
@@ -354,7 +359,7 @@ public class SeatPanel extends JPanel{
 
     public boolean isSeatBooked(String identifier) {
         Seat seat = getSeat(identifier);
-        if(seat == null) {
+        if (seat == null) {
             return false;
         }
         return seat.isBooked();
@@ -362,7 +367,7 @@ public class SeatPanel extends JPanel{
 
     public boolean isSeatSelected(String identifier) {
         Seat seat = getSeat(identifier);
-        if(seat == null) {
+        if (seat == null) {
             return false;
         }
         return seat.isSelected();
@@ -370,9 +375,47 @@ public class SeatPanel extends JPanel{
 
     public boolean isSeatAvailable(String identifier) {
         Seat seat = getSeat(identifier);
-        if(seat != null && !seat.isSelected() && !seat.isBooked()) {
+        if (seat != null && !seat.isSelected() && !seat.isBooked()) {
             return true;
         }
         return false;
+    }
+
+    public int getTotalSeatCount() {
+        return seats.size();
+    }
+
+    public int getBookedSeatCount() {
+        int booked = 0;
+        for (Seat seat : seats) {
+            if (seat.isBooked()) {
+                booked++;
+            }
+        }
+        return booked;
+    }
+
+    public int getAvailableSeatCount() {
+        return getTotalSeatCount() - getBookedSeatCount();
+    }
+
+    public List<String> getAvailableSeatIdentifiers() {
+        List<String> availableSeats = new ArrayList<>();
+        for (Seat seat : seats) {
+            if (!seat.isBooked()) {
+                availableSeats.add(seat.getIdentifier());
+            }
+        }
+        return availableSeats;
+    }
+
+    public List<String> getBookedSeatIdentifiers() {
+        List<String> bookedSeats = new ArrayList<>();
+        for (Seat seat : seats) {
+            if (seat.isBooked()) {
+                bookedSeats.add(seat.getIdentifier());
+            }
+        }
+        return bookedSeats;
     }
 }
