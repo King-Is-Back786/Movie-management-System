@@ -13,6 +13,7 @@ public class MainFrame extends JFrame {
     SeatPanel seatPanel;
     BookingPanel bookingPanel;
     MyBookingsPanel myBookingsPanel; // 1. Declare MyBookingsPanel
+    AdminPanel adminPanel;
 
     public MainFrame() {
         setTitle("Movie Management System");
@@ -32,6 +33,8 @@ public class MainFrame extends JFrame {
         seatPanel = new SeatPanel(this);
         bookingPanel = new BookingPanel(this);
         myBookingsPanel = new MyBookingsPanel(this); // 2. Initialize MyBookingsPanel
+        adminPanel = new AdminPanel(this);
+        
 
         // Add them to the container with card names
         mainContainer.add(loginPanel, "LOGIN");
@@ -42,6 +45,7 @@ public class MainFrame extends JFrame {
         mainContainer.add(seatPanel, "SEAT");
         mainContainer.add(bookingPanel, "BOOKING");
         mainContainer.add(myBookingsPanel, "HISTORY"); // 3. Add to CardLayout container
+        mainContainer.add(adminPanel, "ADMIN");
 
         add(mainContainer);
         cardLayout.show(mainContainer, "LOGIN");
@@ -78,6 +82,10 @@ public class MainFrame extends JFrame {
         myBookingsPanel.loadUserBookings(username);
         cardLayout.show(mainContainer, "HISTORY");
     }
+
+    public void showAdmin() {
+    cardLayout.show(mainContainer, "ADMIN");
+}
 
     public static void main(String[] args) {
         new MainFrame().setVisible(true);

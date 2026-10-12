@@ -40,7 +40,7 @@ public class LoginPanel extends JPanel {
         btnPanel.add(registerButton);
         add(btnPanel);
 
-        // Traditional ActionListener connected to UserDAO for database verification
+        // Traditional ActionListener connected to UserDAO & Admin check
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -52,12 +52,21 @@ public class LoginPanel extends JPanel {
                     return;
                 }
 
-                // Check credentials against the database using UserDAO
+                // Check for Admin shortcut login for Day 9
+                if (username.equals("admin") && password.equals("admin123")) {
+                    JOptionPane.showMessageDialog(null, "Admin Login Successful!");
+                    clearFields();
+                    parentFrame.showAdmin();
+                    return;
+                }
+
+                // Check credentials against the database using UserDAO for regular users
                 UserDAO userDAO = new UserDAO();
                 boolean isValid = userDAO.verifyLogin(username, password);
 
                 if (isValid) {
                     JOptionPane.showMessageDialog(null, "Login Successful!");
+                    clearFields();
                     parentFrame.showHome(username);
                 } else {
                     JOptionPane.showMessageDialog(null, "Invalid username or password!", "Error", JOptionPane.ERROR_MESSAGE);
