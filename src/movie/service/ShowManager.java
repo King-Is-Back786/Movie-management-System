@@ -1,7 +1,7 @@
 package movie.service;
 
-import movie.model.Show;
 import java.util.ArrayList;
+import movie.model.Show;
 
 public class ShowManager {
 
@@ -9,6 +9,11 @@ public class ShowManager {
 
     public ShowManager() {
         shows = new ArrayList<>();
+    }
+
+    // for gui uses
+    public ArrayList<Show> getShows() {
+        return shows;
     }
 
     // CREATE
@@ -20,13 +25,13 @@ public class ShowManager {
     public void displayShows() {
         for (Show show : shows) {
             System.out.println(
-                    show.getShowId() + " - Movie: " +
-                    show.getMovieId() + " - Theatre: " +
-                    show.getTheatreId() + " - Screen: " +
-                    show.getScreenId() + " - " +
-                    show.getShowDate() + " - " +
-                    show.getShowTime() + " - Price: " +
-                    show.getPrice()
+                    show.getShowId() + " - Movie: "
+                    + show.getMovieId() + " - Theatre: "
+                    + show.getTheatreId() + " - Screen: "
+                    + show.getScreenId() + " - "
+                    + show.getShowDate() + " - "
+                    + show.getShowTime() + " - Price: "
+                    + show.getPrice()
             );
         }
     }
@@ -45,8 +50,8 @@ public class ShowManager {
 
     // UPDATE
     public boolean updateShow(int showId, int movieId, int theatreId,
-                              int screenId, String showDate,
-                              String showTime, double price) {
+            int screenId, String showDate,
+            String showTime, double price) {
 
         Show show = findShowById(showId);
 

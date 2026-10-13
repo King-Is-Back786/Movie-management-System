@@ -1,7 +1,7 @@
 package movie.service;
 
-import movie.model.Theatre;
 import java.util.ArrayList;
+import movie.model.Theatre;
 
 public class TheatreManager {
 
@@ -9,6 +9,11 @@ public class TheatreManager {
 
     public TheatreManager() {
         theatres = new ArrayList<>();
+    }
+
+    // for gui uses
+    public ArrayList<Theatre> getTheatres() {
+        return theatres;
     }
 
     // CREATE
@@ -20,9 +25,9 @@ public class TheatreManager {
     public void displayTheatres() {
         for (Theatre theatre : theatres) {
             System.out.println(
-                    theatre.getTheatreId() + " - " +
-                    theatre.getName() + " - " +
-                    theatre.getLocation()
+                    theatre.getTheatreId() + " - "
+                    + theatre.getName() + " - "
+                    + theatre.getLocation()
             );
         }
     }

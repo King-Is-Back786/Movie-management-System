@@ -6,8 +6,8 @@ import java.util.ArrayList;
 public class MovieManager {
 
     private ArrayList<Movie> movies;
-    
-    public MovieManager(){
+
+    public MovieManager() {
         movies = new ArrayList<Movie>();
     }
 
@@ -15,9 +15,9 @@ public class MovieManager {
         movies.add(movie);
     }
 
-    public Movie findMovieById(int movieid){
+    public Movie findMovieById(int movieid) {
         for (Movie movie : movies) {
-            if(movie.getMovieId() == movieid){
+            if (movie.getMovieId() == movieid) {
                 return movie;
             }
         }
@@ -25,44 +25,48 @@ public class MovieManager {
     }
 
     public boolean updateMovie(int movieId, String title, String genre,
-                           long duration, String language, double rating,
-                           String description, String poster) {
+            int duration, String language, double rating,
+            String description, String poster) {
 
-    Movie movie = findMovieById(movieId);
+        Movie movie = findMovieById(movieId);
 
-    if (movie == null) {
-        return false;
+        if (movie == null) {
+            return false;
+        }
+
+        movie.setTitle(title);
+        movie.setGenre(genre);
+        movie.setDuration(duration);
+        movie.setLanguage(language);
+        movie.setRating(rating);
+        movie.setDescription(description);
+        movie.setPoster(poster);
+
+        return true;
     }
 
-    movie.setTitle(title);
-    movie.setGenre(genre);
-    movie.setDuration(duration);
-    movie.setLanguage(language);
-    movie.setRating(rating);
-    movie.setDescription(description);
-    movie.setPoster(poster);
+    public boolean deleteMovie(int movieId) {
 
-    return true;
-}
+        Movie movie = findMovieById(movieId);
 
-public boolean deleteMovie(int movieId) {
+        if (movie == null) {
+            return false;
+        }
 
-    Movie movie = findMovieById(movieId);
+        movies.remove(movie);
 
-    if (movie == null) {
-        return false;
+        return true;
     }
 
-    movies.remove(movie);
+    public ArrayList<Movie> getMovies() {
+        return movies;
+    }
 
-    return true;
-}
-
-     public void displayMovies() {
+    public void displayMovies() {
         for (Movie movie : movies) {
             System.out.println(
-                movie.getMovieId() + " - " +
-                movie.getTitle()
+                    movie.getMovieId() + " - "
+                    + movie.getTitle()
             );
         }
     }
