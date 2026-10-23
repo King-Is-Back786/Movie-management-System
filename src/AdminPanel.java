@@ -72,7 +72,7 @@ public class AdminPanel extends JPanel {
         viewAllBookingsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "System Bookings Overview:\n- BK-1042: aakeeb (Inception)\n- BK-1089: test_user (Interstellar)");
+                JOptionPane.showMessageDialog(null, "System Bookings Overview:\n- BK-1042: Hassan (Inception)\n- BK-1089: test_user (Interstellar)");
             }
         });
 
