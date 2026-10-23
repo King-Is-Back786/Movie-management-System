@@ -49,25 +49,25 @@ public class SeatPanel extends JPanel {
     }
 
     private void initializeSeats() {
-        JPanel gridPanel = new JPanel(new GridLayout(5, 6, 8, 8));
+        JPanel gridPanel = new JPanel(new GridLayout(3, 10, 8, 8));
         gridPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        char[] rows = { 'A', 'B', 'C', 'D', 'E', };
-        int columns = 6;
+        char[] rows = { 'A', 'B', 'C' };
+        int columns = 10;
 
         for (char row : rows) {
             String tier;
             double price;
 
-            if (row == 'A' || row == 'B') {
-                tier = "Normal";
-                price = 150.0;
-            } else if (row == 'C' || row == 'D') {
-                tier = "Premium";
+            if (row == 'A') {
+                tier = "Platinum";
+                price = 300.0;
+            } else if (row == 'B') {
+                tier = "Gold";
                 price = 200.0;
             } else {
-                tier = "Recliner";
-                price = 300.0;
+                tier = "Silver";
+                price = 150.0;
             }
 
             for (int col = 1; col <= columns; col++) {
@@ -228,9 +228,9 @@ public class SeatPanel extends JPanel {
         statusPanel.add(bookedLabel);
 
         JPanel tierPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
-        tierPanel.add(new JLabel("Normal (Rows A-B): ₹150"));
-        tierPanel.add(new JLabel("Premium (Rows C-D): ₹200"));
-        tierPanel.add(new JLabel("Recliner (Row E): ₹300"));
+        tierPanel.add(new JLabel("Platinum (Row A): ₹300"));
+        tierPanel.add(new JLabel("Gold (Row B): ₹200"));
+        tierPanel.add(new JLabel("Silver (Row C): ₹150"));
 
         JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton proceedButton = new JButton("Proceed to Pay");
