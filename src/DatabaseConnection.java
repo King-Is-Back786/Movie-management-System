@@ -7,7 +7,7 @@ public class DatabaseConnection {
     // Database credentials
     private static final String URL = "jdbc:mysql://localhost:3306/movie_ticket_system";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "Drb@2311"; // <-- Replace with your MySQL root password
+    private static final String PASSWORD = ""; // <-- Replace with your MySQL root password
 
     private static Connection connection = null;
 

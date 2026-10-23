@@ -7,6 +7,8 @@ import java.util.List;
  import java.sql.Timestamp;
  import java.sql.Statement;
 
+ import movie.model.Show;
+
 public class ShowDAO {
    
 

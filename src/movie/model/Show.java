@@ -11,7 +11,7 @@ public class Show {
     private double price;
 
     public Show(int showId, int movieId, int theatreId, int screenId,
-                String showDate, String showTime, double price) {
+            String showDate, String showTime, double price) {
 
         this.showId = showId;
         this.movieId = movieId;
@@ -20,6 +20,10 @@ public class Show {
         this.showDate = showDate;
         this.showTime = showTime;
         this.price = price;
+    }
+
+    public Show(int showId, int movieId, int screenId, String showDate, String showTime, java.sql.Timestamp timestamp) {
+        this(showId, movieId, 1, screenId, showDate, showTime, 200.0);
     }
 
     public int getShowId() {

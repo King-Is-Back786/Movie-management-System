@@ -79,4 +79,8 @@ public class UserDAO {
         }
         return -1; // -1 indicates user not found
     }
+
+    public boolean registerUser(String username, String password) {
+    return registerUser(username, username + "@example.com", password, "0000000000");
+}
 }

@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import seats.Seat;
+
 public class SeatDAO {
 
     /**

@@ -93,5 +93,8 @@ public void setPoster(String poster) {
     this.poster = poster;
 }
 
+public Movie(int movieId, String title, String genre, String language, int durationMins) {
+    this(movieId, title, genre, durationMins, language, 8.0, "No description", "");
+}
 
 }

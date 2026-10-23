@@ -1,6 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 
+import seats.SeatPanel;
+import seats.SeatSelectionListener;
+
 public class MainFrame extends JFrame {
     CardLayout cardLayout;
     JPanel mainContainer;
@@ -30,7 +33,7 @@ public class MainFrame extends JFrame {
         homePanel = new HomePanel(this);
         moviePanel = new MoviePanel(this);
         theatrePanel = new TheatrePanel(this);
-        seatPanel = new SeatPanel(this);
+        seatPanel = new SeatPanel();
         bookingPanel = new BookingPanel(this);
         myBookingsPanel = new MyBookingsPanel(this); // 2. Initialize MyBookingsPanel
         adminPanel = new AdminPanel(this);

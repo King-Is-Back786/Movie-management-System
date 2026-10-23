@@ -15,6 +15,14 @@ public class Seat {
         this.isBooked = false;
     }
 
+    public Seat(int seatId, int screenId, String seatNumber, String seatType, boolean isBooked) {
+        this(seatNumber, seatType != null ? seatType : "Normal", 150.0);
+        this.isBooked = isBooked;
+        if (isBooked) {
+            this.isSelected = false;
+        }
+    }
+
     public String getIdentifier() {
         return this.identifier;
     }
